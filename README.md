@@ -11,7 +11,15 @@ ddev describe
 ```
 If the project gives you trouble you can follow the DDEV quickstart guide here for a from-scratch project: https://ddev.readthedocs.io/en/latest/users/quickstart/#magento-2
 
-Or, cut the app/code folder out and put it in your existing project and run bin/magento setup:upgrade && bin/magento setup:di:compile followed by bin/magento c:f (Cache flush)
+Or, cut the app/code folder out and put it in your existing project and run 
+```
+bin/magento setup:upgrade && bin/magento setup:di:compile
+```
+followed by 
+```
+bin/magento c:f
+```
+(Cache flush)
 
 # DISCLAIMER:
 This is an amalgamation of others previous open source work.
