@@ -43,7 +43,6 @@ class InlineEdit extends Action
 
         $key = array_keys($hookItems);
         $hookId = !empty($key) ? (int)$key[0] : '';
-        /** @var Hook $hook */
         $hook = $this->hookFactory->create()->load($hookId);
         try {
             $hookData = $hookItems[$hookId];

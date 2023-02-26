@@ -14,7 +14,7 @@ class AfterProduct extends AfterSave
     public function execute(Observer $observer)
     {
         $item = $observer->getDataObject();
-        if ($item->getMpNew()) {
+        if ($item->getBwItemIsNew()) {
             parent::execute($observer);
         } else {
             $this->updateObserver($observer);

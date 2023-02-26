@@ -14,7 +14,7 @@ class AfterCustomer extends AfterSave
     public function execute(Observer $observer)
     {
         $item = $observer->getDataObject();
-        if ($item->getMpNew()) {
+        if ($item->getBwItemIsNew()) {
             if ($this->i === 0) {
                 parent::execute($observer);
             }

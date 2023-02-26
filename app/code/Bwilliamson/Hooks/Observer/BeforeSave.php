@@ -8,7 +8,7 @@ use Magento\Framework\Event\ObserverInterface;
 
 class BeforeSave implements ObserverInterface
 {
-    protected $helper;
+    protected Data $helper;
 
     public function __construct(Data $helper)
     {
@@ -22,7 +22,7 @@ class BeforeSave implements ObserverInterface
         }
         $item = $observer->getDataObject();
         if ($item->isObjectNew()) {
-            $item->setMpNew(1);
+            $item->setBwItemIsNew(1);
         }
     }
 }

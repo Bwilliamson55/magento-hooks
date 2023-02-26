@@ -18,10 +18,8 @@ use Magento\Framework\Data\FormFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Registry;
 
-
 class Actions extends Generic implements TabInterface
 {
-
     public function __construct(
         Context                  $context,
         Registry                 $registry,
@@ -31,9 +29,7 @@ class Actions extends Generic implements TabInterface
         protected ContentType    $contentType,
         protected Authentication $authentication,
         array                    $data = []
-    )
-    {
-
+    ) {
         parent::__construct($context, $registry, $formFactory, $data);
     }
 

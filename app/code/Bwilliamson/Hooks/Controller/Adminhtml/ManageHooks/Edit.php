@@ -27,7 +27,6 @@ class Edit extends AbstractManageHooks
 
     public function execute()
     {
-        /** @var Hook $hook */
         $hook = $this->initHook();
         if (!$hook) {
             $resultRedirect = $this->resultRedirectFactory->create();
