@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!--Grid collection-->
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="bwilliamson_hooks_hook_listing_data_source" xsi:type="string">
+                    Bwilliamson\Hooks\Model\ResourceModel\Hook\Grid\Collection
+                </item>
+                <item name="bwilliamson_hooks_logs_listing_data_source" xsi:type="string">
+                    Bwilliamson\Hooks\Model\ResourceModel\Logs\Grid\Collection
+                </item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Bwilliamson\Hooks\Model\ResourceModel\Hook\Grid\Collection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">bwilliamson_hooks_hook</argument>
+            <argument name="resourceModel" xsi:type="string">Bwilliamson\Hooks\Model\ResourceModel\Hook</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Bwilliamson\Hooks\Model\ResourceModel\Logs\Grid\Collection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">bwilliamson_hooks_history</argument>
+            <argument name="resourceModel" xsi:type="string">Bwilliamson\Hooks\Model\ResourceModel\History</argument>
+        </arguments>
+    </virtualType>
+</config>

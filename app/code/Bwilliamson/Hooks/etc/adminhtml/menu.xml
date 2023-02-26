@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Bwilliamson_Hooks::webhook" title="Webhooks" module="Bwilliamson_Hooks" sortOrder="66"
+             resource="Bwilliamson_Hooks::webhook" parent="Magento_Backend::system"/>
+        <add id="Bwilliamson_Hooks::manage_hooks" title="Manage Hooks" module="Bwilliamson_Hooks" sortOrder="20"
+             action="bwhooks/managehooks" resource="Bwilliamson_Hooks::manage_hooks"
+             parent="Bwilliamson_Hooks::webhook"/>
+        <add id="Bwilliamson_Hooks::logs" title="Logs" module="Bwilliamson_Hooks" sortOrder="20" action="bwhooks/logs"
+             resource="Bwilliamson_Hooks::logs" parent="Bwilliamson_Hooks::webhook"/>
+        <add id="Bwilliamson_Hooks::configuration" title="Configuration" module="Bwilliamson_Hooks" sortOrder="1200"
+             action="adminhtml/system_config/edit/section/bwilliamson_hooks_section"
+             resource="Bwilliamson_Hooks::configuration" parent="Bwilliamson_Hooks::webhook"/>
+    </menu>
+</config>

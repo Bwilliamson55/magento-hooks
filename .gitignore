@@ -72,3 +72,12 @@ atlassian*
 /generated/*
 !/generated/.htaccess
 .DS_Store
+/vendor/
+/var/
+/setup/
+/pub/
+/phpserver/
+/lib/
+/generated/
+/dev/
+/bin/

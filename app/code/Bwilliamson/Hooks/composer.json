@@ -1,0 +1,26 @@
+{
+    "name": "bwilliamson/module-hooks",
+    "description": "Magento 2 Webhooks Extension",
+    "require": {
+        "liquid/liquid": "^1.4.8"
+    },
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Bwilliamson",
+            "email": "nope@nope.com",
+            "homepage": "https://www.nope.com",
+            "role": "Nope Support"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Bwilliamson\\Hooks\\": ""
+        }
+    }
+}

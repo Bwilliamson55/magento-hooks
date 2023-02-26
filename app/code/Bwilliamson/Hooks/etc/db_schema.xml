@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="bwilliamson_hooks_hook" engine="innodb" comment="Hooks">
+        <column xsi:type="int" name="hook_id" padding="10" unsigned="true" nullable="false" identity="true"
+                comment="Id"/>
+        <column xsi:type="text" name="name" comment="Name"/>
+        <column xsi:type="int" name="status" nullable="false" unsigned="true" identity="false" comment="Status"/>
+        <column xsi:type="text" name="order_status" comment="Order Status"/>
+        <column xsi:type="text" name="store_ids" comment="Stores"/>
+        <column xsi:type="text" name="hook_type" comment="Hook Type"/>
+        <column xsi:type="text" name="priority" comment="Priority"/>
+        <column xsi:type="text" name="payload_url" comment="Payload URL"/>
+        <column xsi:type="text" name="method" comment="Method"/>
+        <column xsi:type="text" name="authentication" comment="Authentication"/>
+        <column xsi:type="text" name="username" comment="Username"/>
+        <column xsi:type="text" name="password" comment="Password"/>
+        <column xsi:type="text" name="headers" comment="Header"/>
+        <column xsi:type="text" name="content_type" comment="Content-Type"/>
+        <column xsi:type="text" name="body" comment="Body"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Creation Time"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Update Time"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="hook_id"/>
+        </constraint>
+    </table>
+    <table name="bwilliamson_hooks_history" engine="innodb" comment="Hooks History">
+        <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true" comment="Log Id"/>
+        <column xsi:type="int" name="hook_id" unsigned="true" nullable="false" comment="Hook Id"/>
+        <index referenceId="BWILLIAMSON_HOOKS_HISTORY_HOOK_ID" indexType="btree">
+            <column name="hook_id"/>
+        </index>
+        <constraint xsi:type="foreign" referenceId="BWILLIAMSON_HOOKS_HISTORY_HOOK_ID_BWILLIAMSON_HOOKS_HOOK_ID"
+                    table="bwilliamson_hooks_history" column="hook_id" referenceTable="bwilliamson_hooks_hook"
+                    referenceColumn="hook_id" onDelete="CASCADE"/>
+        <column xsi:type="text" name="hook_name" comment="Name"/>
+        <column xsi:type="text" name="status" comment="Status"/>
+        <column xsi:type="text" name="store_ids" comment="Store ids"/>
+        <column xsi:type="text" name="hook_type" comment="Hook type"/>
+        <column xsi:type="text" name="response" comment="Response"/>
+        <column xsi:type="text" name="priority" comment="Priority"/>
+        <column xsi:type="text" name="payload_url" comment="Payload url"/>
+        <column xsi:type="text" name="body" comment="Body"/>
+        <column xsi:type="timestamp" name="created_at" on_update="false" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Creation Time"/>
+        <column xsi:type="timestamp" name="updated_at" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Update Time"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+</schema>
