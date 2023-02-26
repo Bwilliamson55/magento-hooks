@@ -1,0 +1,49 @@
+{
+    "bwilliamson_hooks_hook": {
+        "column": {
+            "hook_id": true,
+            "name": true,
+            "status": true,
+            "order_status": true,
+            "store_ids": true,
+            "hook_type": true,
+            "priority": true,
+            "payload_url": true,
+            "method": true,
+            "authentication": true,
+            "username": true,
+            "password": true,
+            "headers": true,
+            "content_type": true,
+            "body": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "bwilliamson_hooks_history": {
+        "column": {
+            "id": true,
+            "hook_id": true,
+            "hook_name": true,
+            "status": true,
+            "store_ids": true,
+            "hook_type": true,
+            "response": true,
+            "priority": true,
+            "payload_url": true,
+            "body": true,
+            "created_at": true,
+            "updated_at": true
+        },
+        "index": {
+            "BWILLIAMSON_HOOKS_HISTORY_HOOK_ID": true
+        },
+        "constraint": {
+            "BWILLIAMSON_HOOKS_HISTORY_HOOK_ID_BWILLIAMSON_HOOKS_HOOK_HOOK_ID": true,
+            "PRIMARY": true
+        }
+    }
+}
