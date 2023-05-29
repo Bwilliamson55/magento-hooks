@@ -25,7 +25,6 @@ use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
 use Psr\Log\LoggerInterface;
-use Zend_Http_Response;
 
 class Data extends AbstractHelper
 {
@@ -166,27 +165,30 @@ class Data extends AbstractHelper
         $this->logger->critical(implode(',', $headersConfig));
         $this->logger->critical($this->json->serialize($body));
         $result = ['success' => false];
-        try {
-            $resultCurl = $curl->read();
+     try {
+        $resultCurl = $curl->read();
 
-            $result['response'] = $resultCurl;
-            if (!empty($resultCurl)) {
-                $result['status'] = Zend_Http_Response::extractCode($resultCurl);
-                if (isset($result['status']) && in_array($result['status'], [200, 201])) {
-                    $result['success'] = true;
-                } else {
-                    $result['message'] = __('Cannot connect to server. Please try again later.');
-                }
+        list($headers, $body) = explode("\r\n\r\n", $resultCurl, 2);
+        $status_line = substr($headers, 0, strpos($headers, "\r\n"));
+        preg_match('#HTTP/[0-9\.]+\s+([0-9]+)#', $status_line, $matches);
+        $result['status'] = $matches[1];
+
+        if (!empty($resultCurl)) {
+            if (isset($result['status']) && in_array($result['status'], [200, 201])) {
+                $result['success'] = true;
             } else {
                 $result['message'] = __('Cannot connect to server. Please try again later.');
             }
-        } catch (Exception $e) {
-            $result['message'] = $e->getMessage();
+        } else {
+            $result['message'] = __('Cannot connect to server. Please try again later.');
         }
-        $curl->close();
-
-        return $result;
+    } catch (Exception $e) {
+        $result['message'] = $e->getMessage();
     }
+    $curl->close();
+
+    return $result;
+}
 
     public function getBasicAuthHeader($username, $password): string
     {
