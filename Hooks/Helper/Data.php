@@ -8,7 +8,6 @@ use Bwilliamson\Hooks\Model\Config\Source\HookType;
 use Bwilliamson\Hooks\Model\Config\Source\Status;
 use Bwilliamson\Hooks\Model\HistoryFactory;
 use Bwilliamson\Hooks\Model\HookFactory;
-use Bwilliamson\Hooks\Model\ResourceModel\Hook\Collection;
 use Exception;
 use Liquid\Template;
 use Magento\Backend\Model\UrlInterface;
@@ -17,10 +16,10 @@ use Magento\Customer\Api\CustomerRepositoryInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
-use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Data\Collection\AbstractDb;
 use Magento\Framework\HTTP\Adapter\CurlFactory;
 use Magento\Framework\Mail\Template\TransportBuilder;
+use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Store\Model\Store;
 use Magento\Store\Model\StoreManagerInterface;
@@ -45,17 +44,18 @@ class Data extends AbstractHelper
         protected CustomerRepositoryInterface $customer,
         LoggerInterface                       $logger,
         Json                                  $json
-    )
-    {
+    ) {
         $this->liquidFilters = $liquidFilters;
         $this->logger = $logger;
         $this->json = $json;
         parent::__construct($context);
     }
 
-    /**
-     * @throws NoSuchEntityException
-     */
+    public function isEnabled($scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT): bool
+    {
+        return $this->scopeConfig->isSetFlag('bwilliamson_hooks/general/enabled', $scope);
+    }
+
     public function getItemStore($item): int
     {
         if (method_exists($item, 'getData')) {
@@ -65,25 +65,14 @@ class Data extends AbstractHelper
         return $this->storeManager->getStore()->getId();
     }
 
-    /**
-     * @throws NoSuchEntityException
-     * @throws LocalizedException
-     */
     public function send($item, $hookType): void
     {
         if (!$this->isEnabled()) {
             return;
         }
 
-        /** @var Collection $hookCollection */
-        $hookCollection = $this->hookFactory->create()->getCollection()
-            ->addFieldToFilter('hook_type', $hookType)
-            ->addFieldToFilter('status', 1)
-            ->addFieldToFilter('store_ids', [
-                ['finset' => Store::DEFAULT_STORE_ID],
-                ['finset' => $this->getItemStore($item)]
-            ])
-            ->setOrder('priority', 'ASC');
+        $hookCollection = $this->getFilteredHookCollection($item, $hookType);
+
         foreach ($hookCollection as $hook) {
             if ($hook->getHookType() === HookType::ORDER) {
                 $statusItem = $item->getStatus();
@@ -127,9 +116,7 @@ class Data extends AbstractHelper
                 $item->setStockItem(null);
             }
 
-            return $template->render([
-                'item' => $item,
-            ]);
+            return $template->render(['item' => $item]);
         } catch (Exception $e) {
             $this->logger->critical($e->getMessage());
         }
@@ -226,15 +213,18 @@ class Data extends AbstractHelper
             $history->setStatus(Status::ERROR)
                 ->setMessage($result['message']);
         }
-
-        $history->save();
     }
 
-    public function isEnabled($scope = ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
+    private function getFilteredHookCollection($item, $hookType): AbstractDb|AbstractCollection
     {
-        return $this->scopeConfig->isSetFlag(
-            'bwilliamson_hooks/general/enabled',
-            $scope
-        );
+        //TODO: refactor for deprecation of getCollection
+        return $this->hookFactory->create()->getCollection()
+            ->addFieldToFilter('hook_type', $hookType)
+            ->addFieldToFilter('status', 1)
+            ->addFieldToFilter('store_ids', [
+                ['finset' => Store::DEFAULT_STORE_ID],
+                ['finset' => $this->getItemStore($item)]
+            ])
+            ->setOrder('priority', 'ASC');
     }
 }

@@ -26,8 +26,7 @@ abstract class AfterSave implements ObserverInterface
         ManagerInterface      $messageManager,
         StoreManagerInterface $storeManager,
         Data                  $helper
-    )
-    {
+    ) {
         $this->hookFactory = $hookFactory;
         $this->helper = $helper;
         $this->messageManager = $messageManager;
@@ -36,20 +35,21 @@ abstract class AfterSave implements ObserverInterface
 
     /**
      * @param Observer $observer
-     *
+     * @return void
      * @throws Exception
      */
-    public function execute(Observer $observer)
+    public function execute(Observer $observer): void
     {
         $item = $observer->getDataObject();
         $this->helper->send($item, $this->hookType);
     }
 
     /**
+     * @param Observer $observer
      * @throws NoSuchEntityException
      * @throws LocalizedException
      */
-    protected function updateObserver($observer)
+    protected function updateObserver(Observer $observer): void
     {
         $item = $observer->getDataObject();
         $this->helper->send($item, $this->hookTypeUpdate);

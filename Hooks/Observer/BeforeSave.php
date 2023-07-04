@@ -15,11 +15,16 @@ class BeforeSave implements ObserverInterface
         $this->helper = $helper;
     }
 
-    public function execute(Observer $observer)
+    /**
+     * @param Observer $observer
+     * @return void
+     */
+    public function execute(Observer $observer): void
     {
         if (!$this->helper->isEnabled()) {
             return;
         }
+        // Persist newness to after save observers (e.g. AfterProduct)
         $item = $observer->getDataObject();
         if ($item->isObjectNew()) {
             $item->setBwItemIsNew(1);
