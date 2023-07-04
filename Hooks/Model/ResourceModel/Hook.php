@@ -22,12 +22,13 @@ class Hook extends AbstractDb
     public function __construct(
         public DateTime $date,
         public Context  $context
-    )
-    {
+    ) {
         parent::__construct($this->context);
     }
 
     /**
+     * Initialize resource model.
+     *
      * @return void
      */
     protected function _construct(): void
@@ -35,9 +36,15 @@ class Hook extends AbstractDb
         $this->_init(self::MAIN_TABLE, self::ID_FIELD_NAME);
     }
 
+    /**
+     * Perform actions before saving the object.
+     *
+     * @param AbstractModel $object
+     * @return Hook
+     */
     protected function _beforeSave(AbstractModel $object): Hook
     {
-        //set default Update At and Create At time post
+        // Set default updated_at, and created_at
         $object->setUpdatedAt($this->date->date());
         if ($object->isObjectNew()) {
             $object->setCreatedAt($this->date->date());
