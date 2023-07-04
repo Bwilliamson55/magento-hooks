@@ -6,16 +6,21 @@ use Magento\Framework\Data\OptionSourceInterface;
 
 class Method implements OptionSourceInterface
 {
-    const GET = 'GET';
-    const HEAD = 'HEAD';
-    const POST = 'POST';
-    const PUT = 'PUT';
-    const DELETE = 'DELETE';
-    const CONNECT = 'CONNECT';
-    const OPTIONS = 'OPTIONS';
-    const TRACE = 'TRACE';
-    const PATCH = 'PATCH';
+    public const GET = 'GET';
+    public const HEAD = 'HEAD';
+    public const POST = 'POST';
+    public const PUT = 'PUT';
+    public const DELETE = 'DELETE';
+    public const CONNECT = 'CONNECT';
+    public const OPTIONS = 'OPTIONS';
+    public const TRACE = 'TRACE';
+    public const PATCH = 'PATCH';
 
+    /**
+     * Returns an array of methods for the dropdown/select field.
+     *
+     * @return array
+     */
     public function toOptionArray(): array
     {
         $options = [];
@@ -29,6 +34,11 @@ class Method implements OptionSourceInterface
         return $options;
     }
 
+    /**
+     * Returns an array of methods.
+     *
+     * @return array
+     */
     public function toArray(): array
     {
         return [

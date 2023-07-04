@@ -12,10 +12,10 @@ class AfterCategory extends AfterSave
 
     protected string $hookTypeUpdate = HookType::UPDATE_CATEGORY;
 
-    public function execute(Observer $observer)
+    public function execute(Observer $observer): void
     {
         $item = $observer->getDataObject();
-        if ($item->getBwItemIsNew()) {
+        if ($item?->getBwItemIsNew()) {
             parent::execute($observer);
         } else {
             $this->updateObserver($observer);

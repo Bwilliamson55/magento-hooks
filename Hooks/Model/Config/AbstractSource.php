@@ -7,6 +7,8 @@ use Magento\Framework\Data\OptionSourceInterface;
 abstract class AbstractSource implements OptionSourceInterface
 {
     /**
+     * Returns an array of options for the dropdown/select field.
+     *
      * @return array
      */
     public function toOptionArray(): array
@@ -24,7 +26,9 @@ abstract class AbstractSource implements OptionSourceInterface
     }
 
     /**
-     * @return mixed
+     * Returns an array of options.
+     *
+     * @return array
      */
     abstract public function toArray(): array;
 }

@@ -6,8 +6,13 @@ use Bwilliamson\Hooks\Model\Config\AbstractSource;
 
 class Authentication extends AbstractSource
 {
-    const BASIC = 'basic';
+    public const BASIC = 'basic';
 
+    /**
+     * Returns an array of authentication options.
+     *
+     * @return array
+     */
     public function toArray(): array
     {
         return [
