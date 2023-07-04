@@ -3,7 +3,7 @@ New/Update/Save/Delete for Customers/Orders/Products/ etc can be configured to a
 
 # Quickstart
 ```shell
-git clone https://github.com/Bwilliamson55/magento-hooks.git ~/your-project-dir/app/code
+git clone https://github.com/Bwilliamson55/magento-hooks.git ~/your-project-dir/app/code/Bwilliamson
 ```
 Install:
 ```

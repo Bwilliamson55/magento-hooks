@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f6c61d4d-ed57-4f8c-b3e9-5401db3a54db" name="Changes" comment="Simplify Project&#10;&#10;- Project is just the module files now. BYODevEnvironment">
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Block/Adminhtml/Hook/Edit.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Block/Adminhtml/Hook/Edit/Form.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Block/Adminhtml/Hook/Edit/Tab/Actions.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Block/Adminhtml/Hook/Edit/Tab/General.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Block/Adminhtml/Hook/Edit/Tab/History.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Block/Adminhtml/Hook/Edit/Tab/Renderer/Body.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Block/Adminhtml/Hook/Edit/Tab/Renderer/Headers.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Block/Adminhtml/Hook/Edit/Tabs.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Block/Adminhtml/LiquidFilters.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Block/Adminhtml/Logs/Edit.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Block/Adminhtml/Logs/Edit/Form.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Block/Adminhtml/ManageHooks.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Controller/Adminhtml/AbstractManageHooks.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Controller/Adminhtml/AbstractManageLogs.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Controller/Adminhtml/Logs/Delete.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Controller/Adminhtml/Logs/Edit.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Controller/Adminhtml/Logs/Index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Controller/Adminhtml/Logs/Log.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Controller/Adminhtml/Logs/Replay.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Controller/Adminhtml/Logs/Save.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Controller/Adminhtml/ManageHooks/Delete.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Controller/Adminhtml/ManageHooks/Edit.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Controller/Adminhtml/ManageHooks/Index.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Controller/Adminhtml/ManageHooks/InlineEdit.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Controller/Adminhtml/ManageHooks/MassDelete.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Controller/Adminhtml/ManageHooks/MassStatus.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Controller/Adminhtml/ManageHooks/NewAction.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Controller/Adminhtml/ManageHooks/Save.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Helper/Data.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Model/Config/AbstractSource.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Model/Config/Source/Authentication.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Model/Config/Source/ContentType.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Model/Config/Source/HookType.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Model/Config/Source/Method.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Model/Config/Source/Status.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Model/History.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Model/Hook.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Model/ResourceModel/History.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Model/ResourceModel/History/Collection.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Model/ResourceModel/Hook.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Model/ResourceModel/Hook/Collection.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Observer/AfterCategory.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Observer/AfterCreditmemo.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Observer/AfterCustomer.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Observer/AfterInvoice.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Observer/AfterOrder.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Observer/AfterOrderComment.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Observer/AfterProduct.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Observer/AfterSave.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Observer/AfterShipment.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Observer/BeforeDeleteCategory.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Observer/BeforeDeleteCustomer.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Observer/BeforeDeleteProduct.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Observer/BeforeSave.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Observer/CustomerLogin.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Observer/Subscriber.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Ui/Component/Listing/Columns/Actions.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/Ui/Component/Listing/Columns/Store.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/composer.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/etc/acl.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/etc/adminhtml/di.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/etc/adminhtml/menu.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/etc/adminhtml/routes.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/etc/adminhtml/system.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/etc/config.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/etc/db_schema.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/etc/db_schema_whitelist.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/etc/di.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/etc/events.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/etc/module.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/registration.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/view/adminhtml/layout/bwhooks_logs_edit.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/view/adminhtml/layout/bwhooks_logs_index.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/view/adminhtml/layout/bwhooks_logs_log.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/view/adminhtml/layout/bwhooks_managehooks_edit.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/view/adminhtml/layout/bwhooks_managehooks_index.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/view/adminhtml/templates/hook/body.phtml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/view/adminhtml/templates/hook/headers.phtml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/view/adminhtml/ui_component/bwilliamson_hooks_logs_listing.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/view/adminhtml/ui_component/bwilliamson_hooks_managehooks_listing.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/view/adminhtml/web/css/form/edit-hook.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/view/adminhtml/web/css/form/logs-grid.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/view/adminhtml/web/css/lib/codemirror.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/view/adminhtml/web/js/addon/display/autorefresh.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/view/adminhtml/web/js/addon/mode/overlay.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/view/adminhtml/web/js/addon/selection/active-line.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/view/adminhtml/web/js/grid/columns/select.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/view/adminhtml/web/js/hook/initActionsTab.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/view/adminhtml/web/js/lib/codemirror.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Bwilliamson/Hooks/view/adminhtml/web/js/mode/xml/xml.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerConfigs">
+    <option name="configs">
+      <option value="$PROJECT_DIR$/app/code/Bwilliamson/Hooks/composer.json" />
+    </option>
+  </component>
+  <component name="ComposerSettings" notifyAboutMissingVendor="false" synchronizationState="SYNCHRONIZE">
+    <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="/bin/php" />
+  <component name="ProjectId" id="2S7PkCC0bXUBrnyemU92wD5Izmy" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "/home/bwilliamson/dev/m2/magento-hooks2",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f6c61d4d-ed57-4f8c-b3e9-5401db3a54db" name="Changes" comment="" />
+      <created>1688494787120</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1688494787120</updated>
+      <workItem from="1688494789447" duration="497000" />
+      <workItem from="1688495595736" duration="30000" />
+    </task>
+    <task id="LOCAL-00001" summary="Simplify Project&#10;&#10;- Project is just the module files now. BYODevEnvironment">
+      <option name="closed" value="true" />
+      <created>1688495260075</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1688495260075</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Simplify Project" />
+    <MESSAGE value="Simplify Project&#10;&#10;- Project is just the module files now. BYODevEnvironment" />
+    <option name="LAST_COMMIT_MESSAGE" value="Simplify Project&#10;&#10;- Project is just the module files now. BYODevEnvironment" />
+  </component>
+</project>
