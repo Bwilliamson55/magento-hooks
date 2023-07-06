@@ -15,10 +15,6 @@ abstract class AbstractManageHooks extends Action
     /** Authorization level of a basic admin session */
     const ADMIN_RESOURCE = 'Bwilliamson_Hooks::webhooks';
 
-    protected ?HooksServiceInterface $hooksService;
-    protected ?HooksRepositoryInterface $hooksRepository;
-    protected ?HookFactoryInterface $hookFactory;
-
     /**
      * @param Context $context
      * @param HooksServiceInterface|null $hooksService
@@ -26,14 +22,11 @@ abstract class AbstractManageHooks extends Action
      * @param HookFactoryInterface|null $hookFactory
      */
     public function __construct(
-        Context $context,
-        ?HooksServiceInterface $hooksService,
-        ?HooksRepositoryInterface $hooksRepository,
-        ?HookFactoryInterface $hookFactory
+        Context                             $context,
+        protected ?HooksServiceInterface    $hooksService,
+        protected ?HooksRepositoryInterface $hooksRepository,
+        protected ?HookFactoryInterface     $hookFactory
     ) {
-        $this->hooksService = $hooksService;
-        $this->hooksRepository = $hooksRepository;
-        $this->hookFactory = $hookFactory;
 
         parent::__construct($context);
     }
