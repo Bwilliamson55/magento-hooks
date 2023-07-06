@@ -5,25 +5,25 @@ namespace Bwilliamson\Hooks\Model;
 use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\Model\Context;
 use Magento\Framework\Registry;
-use Magento\Framework\Serialize\Serializer\Json;
+use Magento\Framework\Serialize\SerializerInterface;
 
 class Hook extends AbstractModel
 {
     const CACHE_TAG = 'bwilliamson_webhook_hook';
     protected $_cacheTag = 'bwilliamson_webhook_hook';
     protected $_eventPrefix = 'bwilliamson_webhook_hook';
-    protected Json $json;
+    protected SerializerInterface $jsonSerializer;
 
     public function __construct(
-        Json $json,
         Context $context,
         Registry $registry,
         ResourceModel\Hook $resource,
         ResourceModel\Hook\Collection $resourceCollection,
+        SerializerInterface $jsonSerializer,
         array $data = []
     ) {
-        $this->json = $json;
         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
+        $this->jsonSerializer = $jsonSerializer;
     }
 
     protected function _construct(): void
@@ -35,7 +35,7 @@ class Hook extends AbstractModel
     {
         if (!is_array($this->getHeaders())) {
             $value = $this->getHeaders();
-            $this->setHeaders(empty($value) ? false : $this->json->unserialize($value));
+            $this->setHeaders(empty($value) ? false : $this->jsonSerializer->unserialize($value));
         }
 
         return parent::_afterLoad();
