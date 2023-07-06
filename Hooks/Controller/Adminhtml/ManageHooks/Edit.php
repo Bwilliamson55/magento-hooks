@@ -3,29 +3,26 @@
 namespace Bwilliamson\Hooks\Controller\Adminhtml\ManageHooks;
 
 use Bwilliamson\Hooks\Controller\Adminhtml\AbstractManageHooks;
-use Bwilliamson\Hooks\Model\HookFactory;
+use Bwilliamson\Hooks\Api\HooksServiceInterface;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Page;
-use Magento\Framework\Registry;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\Result\Redirect;
+use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\View\Result\PageFactory;
 
 class Edit extends AbstractManageHooks
 {
-    public PageFactory $resultPageFactory;
 
     public function __construct(
-        HookFactory $hookFactory,
-        Registry    $coreRegistry,
-        Context     $context,
-        PageFactory $resultPageFactory
-    )
-    {
-        $this->resultPageFactory = $resultPageFactory;
-
-        parent::__construct($hookFactory, $coreRegistry, $context);
+        protected ?HooksServiceInterface $hooksService,
+        Context                          $context,
+        private readonly PageFactory $resultPageFactory
+    ) {
+        parent::__construct($context);
     }
 
-    public function execute()
+    public function execute(): ResultInterface|ResponseInterface|Page|Redirect
     {
         $hook = $this->initHook();
         if (!$hook) {
@@ -40,7 +37,7 @@ class Edit extends AbstractManageHooks
             $hook->setData($data);
         }
 
-        $this->coreRegistry->register('bwilliamson_hooks_hook', $hook);
+        $this->hooksService->setValue('bwilliamson_hooks_hook', $hook);
 
         /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
