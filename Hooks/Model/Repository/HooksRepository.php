@@ -10,6 +10,11 @@ use Magento\Framework\DataObject;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Api\SearchResultsInterface;
+use Magento\Framework\Api\SearchResultsInterfaceFactory;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 
 class HooksRepository
 {
@@ -17,10 +22,16 @@ class HooksRepository
     /**
      * @param CollectionFactory $hooksCollectionFactory
      * @param HookResourceModel $hookResourceModel
+     * @param SearchResultsInterfaceFactory $searchResultsFactory
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param CollectionProcessorInterface $collectionProcessor
      */
     public function __construct(
         private readonly CollectionFactory $hooksCollectionFactory,
-        private readonly HookResourceModel $hookResourceModel
+        private readonly HookResourceModel $hookResourceModel,
+        private readonly SearchResultsInterfaceFactory $searchResultsFactory,
+        private readonly SearchCriteriaBuilder $searchCriteriaBuilder,
+        private readonly CollectionProcessorInterface $collectionProcessor
     ) {
     }
 
@@ -46,23 +57,26 @@ class HooksRepository
     }
 
     /**
-     * Retrieve a list of hooks based on filters.
+     * Retrieve a list of hooks based on search criteria.
      *
-     * @param array $filters
-     * @param int|null $pageSize
-     * @return Hook[]
+     * @param SearchCriteriaInterface $searchCriteria
+     * @return SearchResultsInterface
      */
-    public function getList(array $filters = [], ?int $pageSize = null): array
+    public function getList(SearchCriteriaInterface $searchCriteria): SearchResultsInterface
     {
         $collection = $this->hooksCollectionFactory->create();
-        foreach ($filters as $field => $value) {
-            $collection->addFieldToFilter($field, $value);
-        }
-        if ($pageSize !== null) {
-            $collection->setPageSize($pageSize);
-        }
+        $this->collectionProcessor->process($searchCriteria, $collection);
 
-        return $collection->getItems();
+        $this->searchCriteriaBuilder->setCriteria($searchCriteria);
+        $this->searchCriteriaBuilder->setRequestName('bwilliamson_hooks_hook_listing');
+        $searchCriteria = $this->searchCriteriaBuilder->create();
+
+        $searchResult = $this->searchResultsFactory->create();
+        $searchResult->setSearchCriteria($searchCriteria);
+        $searchResult->setItems($collection->getItems());
+        $searchResult->setTotalCount($collection->getSize());
+
+        return $searchResult;
     }
 
     /**
@@ -114,5 +128,27 @@ class HooksRepository
         $hook = $this->getById($hookId);
 
         return $this->delete($hook);
+    }
+
+    /**
+     * Delete multiple hooks by their IDs.
+     *
+     * @param array $hookIds
+     * @return int The number of deleted hooks
+     * @throws CouldNotDeleteException
+     */
+    public function deleteByIds(array $hookIds): int
+    {
+        $deletedHooks = 0;
+        foreach ($hookIds as $hookId) {
+            try {
+                $this->deleteById($hookId);
+                $deletedHooks++;
+            } catch (NoSuchEntityException $e) {
+                // Ignore if the hook does not exist
+            }
+        }
+
+        return $deletedHooks;
     }
 }
