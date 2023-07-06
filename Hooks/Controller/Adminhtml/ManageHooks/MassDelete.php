@@ -2,44 +2,43 @@
 
 namespace Bwilliamson\Hooks\Controller\Adminhtml\ManageHooks;
 
-use Bwilliamson\Hooks\Model\ResourceModel\Hook\CollectionFactory;
-use Exception;
+use Bwilliamson\Hooks\Api\HooksRepositoryInterface;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\Controller\ResultFactory;
-use Magento\Ui\Component\MassAction\Filter;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 class MassDelete extends Action
 {
-    public Filter $filter;
-    public CollectionFactory $collectionFactory;
+    private HooksRepositoryInterface $hooksRepository;
 
     public function __construct(
         Context           $context,
-        Filter            $filter,
-        CollectionFactory $collectionFactory
-    )
-    {
-        $this->filter = $filter;
-        $this->collectionFactory = $collectionFactory;
-
+        HooksRepositoryInterface $hooksRepository
+    ) {
+        $this->hooksRepository = $hooksRepository;
         parent::__construct($context);
     }
 
     public function execute()
     {
-        $collection = $this->filter->getCollection($this->collectionFactory->create());
-
-        try {
-            $collection->walk('delete');
-
-            $this->messageManager->addSuccessMessage(__('Posts has been deleted.'));
-        } catch (Exception $e) {
-            $this->messageManager->addErrorMessage(__('Something wrong when delete Posts.'));
+        $hookIds = $this->getRequest()->getParam('selected');
+        if (!is_array($hookIds)) {
+            $hookIds = [];
         }
 
-        /** @var Redirect $resultRedirect */
+        try {
+            $this->hooksRepository->deleteByIds($hookIds);
+            $this->messageManager->addSuccessMessage(__('Hooks have been deleted.'));
+        } catch (NoSuchEntityException $e) {
+            $this->messageManager->addErrorMessage(__('One or more hooks were not found.'));
+        } catch (LocalizedException $e) {
+            $this->messageManager->addErrorMessage($e->getMessage());
+        } catch (\Exception $e) {
+            $this->messageManager->addErrorMessage(__('Something went wrong while deleting hooks.'));
+        }
+
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
 
         return $resultRedirect->setPath('*/*/');

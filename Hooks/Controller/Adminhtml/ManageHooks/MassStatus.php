@@ -2,37 +2,35 @@
 
 namespace Bwilliamson\Hooks\Controller\Adminhtml\ManageHooks;
 
-use Bwilliamson\Hooks\Model\ResourceModel\Hook\CollectionFactory;
+use Bwilliamson\Hooks\Api\HooksRepositoryInterface;
 use Exception;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Ui\Component\MassAction\Filter;
 
 class MassStatus extends Action
 {
-    public Filter $filter;
-
-    public CollectionFactory $collectionFactory;
-
+    private Filter $filter;
+    private HooksRepositoryInterface $hooksRepository;
 
     public function __construct(
         Context           $context,
         Filter            $filter,
-        CollectionFactory $collectionFactory
-    )
-    {
+        HooksRepositoryInterface $hooksRepository
+    ) {
         $this->filter = $filter;
-        $this->collectionFactory = $collectionFactory;
-
+        $this->hooksRepository = $hooksRepository;
         parent::__construct($context);
     }
 
     public function execute()
     {
-        $collection = $this->filter->getCollection($this->collectionFactory->create());
+        $collection = $this->filter->getCollection($this->hooksRepository->getCollection());
+
         $status = (int)$this->getRequest()->getParam('status');
         $hookUpdated = 0;
         foreach ($collection as $hook) {

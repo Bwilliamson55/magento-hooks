@@ -9,13 +9,12 @@ use Magento\Backend\Model\View\Result\ForwardFactory;
 
 class NewAction extends Action
 {
-    public ForwardFactory $resultForwardFactory;
+    private ForwardFactory $resultForwardFactory;
 
     public function __construct(
         Context        $context,
         ForwardFactory $resultForwardFactory
-    )
-    {
+    ) {
         $this->resultForwardFactory = $resultForwardFactory;
 
         parent::__construct($context);

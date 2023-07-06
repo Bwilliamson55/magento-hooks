@@ -2,62 +2,63 @@
 
 namespace Bwilliamson\Hooks\Controller\Adminhtml\ManageHooks;
 
+use Bwilliamson\Hooks\Api\HooksRepositoryInterface;
+use Bwilliamson\Hooks\Api\HooksServiceInterface;
 use Bwilliamson\Hooks\Controller\Adminhtml\AbstractManageHooks;
-use Bwilliamson\Hooks\Model\HookFactory;
 use Exception;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\Result\Redirect;
+use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Registry;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Store\Model\StoreManagerInterface;
 use RuntimeException;
 
 class Save extends AbstractManageHooks
 {
-    protected StoreManagerInterface $_storeManager;
-    protected Json $json;
+    private Json $json;
+    protected ?HooksRepositoryInterface $hooksRepository;
+    protected ?HooksServiceInterface $hooksService;
 
     public function __construct(
-        HookFactory           $hookFactory,
-        Registry              $coreRegistry,
-        Context               $context,
-        Json                  $jsonSerializer,
-        StoreManagerInterface $storeManager
-    )
-    {
+        Context                                $context,
+        Json                                   $jsonSerializer,
+        private readonly StoreManagerInterface $storeManager,
+        HooksRepositoryInterface               $hooksRepository,
+        HooksServiceInterface                  $hooksService
+    ) {
         $this->json = $jsonSerializer;
-        $this->_storeManager = $storeManager;
-
-        parent::__construct($hookFactory, $coreRegistry, $context);
+        $this->hooksRepository = $hooksRepository;
+        $this->hooksService = $hooksService;
+        parent::__construct($context);
     }
 
-    public function execute()
+    public function execute(): ResultInterface|ResponseInterface|Redirect
     {
         $resultRedirect = $this->resultRedirectFactory->create();
-
-        $data = $this->getRequest()->getPost('hook');
+        $postData = $this->getRequest()->getPostValue();
         $hook = $this->initHook();
 
-        if (is_array($data['headers'])) {
-            unset($data['headers']['__empty']);
-            $data['headers'] = $this->json->serialize($data['headers']);
+        if (isset($postData['headers']) && is_array($postData['headers'])) {
+            unset($postData['headers']['__empty']);
+            $postData['headers'] = $this->json->serialize($postData['headers']);
         }
 
-        if (isset($data['order_status']) && $data['order_status']) {
-            $data['order_status'] = implode(',', $data['order_status']);
+        if (isset($postData['order_status']) && $postData['order_status']) {
+            $postData['order_status'] = implode(',', $postData['order_status']);
         }
 
-        if (isset($data['store_ids']) && $data['store_ids'] && !$this->_storeManager->isSingleStoreMode()) {
-            $data['store_ids'] = implode(',', $data['store_ids']);
+        if (isset($postData['store_ids']) && $postData['store_ids'] && !$this->storeManager->isSingleStoreMode()) {
+            $postData['store_ids'] = implode(',', $postData['store_ids']);
         }
 
-        $hook->addData($data);
+        $hook->addData($postData);
 
         try {
-            $hook->save();
-
-            $this->messageManager->addSuccess(__('The hook has been saved.'));
-            $this->_getSession()->setData('bwilliamson_hooks_hook_data', false);
+            $this->hooksRepository->save($hook);
+            $this->messageManager->addSuccessMessage(__('The hook has been saved.'));
+            $this->hooksService->setValue('bwilliamson_hooks_hook_data', false);
 
             if ($this->getRequest()->getParam('back')) {
                 $resultRedirect->setPath('bwhooks/*/edit', ['hook_id' => $hook->getId(), '_current' => true]);
@@ -67,13 +68,12 @@ class Save extends AbstractManageHooks
 
             return $resultRedirect;
         } catch (LocalizedException|RuntimeException $e) {
-            $this->messageManager->addError($e->getMessage());
+            $this->messageManager->addErrorMessage($e->getMessage());
         } catch (Exception $e) {
-            $this->messageManager->addException($e, __('Something went wrong while saving the Post.'));
+            $this->messageManager->addExceptionMessage($e, __('Something went wrong while saving the hook.'));
         }
 
-        $this->_getSession()->setData('bwilliamson_hooks_hook_data', $data);
-
+        $this->hooksService->setValue('bwilliamson_hooks_hook_data', $postData);
         $resultRedirect->setPath('bwhooks/*/edit', ['hook_id' => $hook->getId(), '_current' => true]);
 
         return $resultRedirect;

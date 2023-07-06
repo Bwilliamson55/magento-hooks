@@ -2,33 +2,35 @@
 
 namespace Bwilliamson\Hooks\Controller\Adminhtml\ManageHooks;
 
-use Bwilliamson\Hooks\Model\Hook;
-use Bwilliamson\Hooks\Model\HookFactory;
+use Bwilliamson\Hooks\Api\HooksRepositoryInterface;
 use Exception;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use RuntimeException;
 
 class InlineEdit extends Action
 {
-    public JsonFactory $jsonFactory;
-    public HookFactory $hookFactory;
+    private JsonFactory $jsonFactory;
+    private HooksRepositoryInterface $hooksRepository;
 
     public function __construct(
         Context     $context,
         JsonFactory $jsonFactory,
-        HookFactory $hookFactory
-    )
-    {
+        HooksRepositoryInterface $hooksRepository
+    ) {
         $this->jsonFactory = $jsonFactory;
-        $this->hookFactory = $hookFactory;
+        $this->hooksRepository = $hooksRepository;
 
         parent::__construct($context);
     }
 
-    public function execute()
+    public function execute(): Json|ResultInterface|ResponseInterface
     {
         $resultJson = $this->jsonFactory->create();
         $error = false;
@@ -41,20 +43,22 @@ class InlineEdit extends Action
             ]);
         }
 
-        $key = array_keys($hookItems);
-        $hookId = !empty($key) ? (int)$key[0] : '';
-        $hook = $this->hookFactory->create()->load($hookId);
+        $hookId = key($hookItems);
         try {
+            $hook = $this->hooksRepository->getById((int) $hookId);
             $hookData = $hookItems[$hookId];
             $hook->addData($hookData);
-            $hook->save();
-        } catch (LocalizedException|RuntimeException $e) {
-            $messages[] = $this->getErrorWithHookId($hook, $e->getMessage());
+            $this->hooksRepository->save($hook);
+        } catch (NoSuchEntityException) {
+            $messages[] = $this->getErrorWithHookId($hookId, __('Hook not found.'));
             $error = true;
-        } catch (Exception $e) {
+        } catch (LocalizedException|RuntimeException $e) {
+            $messages[] = $this->getErrorWithHookId($hookId, $e->getMessage());
+            $error = true;
+        } catch (Exception) {
             $messages[] = $this->getErrorWithHookId(
-                $hook,
-                __('Something went wrong while saving the Post.')
+                $hookId,
+                __('Something went wrong while saving the Hook.')
             );
             $error = true;
         }
@@ -66,15 +70,15 @@ class InlineEdit extends Action
     }
 
     /**
-     * Add Hook id to error message
+     * Add Hook ID to error message
      *
-     * @param Hook $hook
+     * @param int $hookId
      * @param string $errorText
      *
      * @return string
      */
-    public function getErrorWithHookId(Hook $hook, string $errorText): string
+    public function getErrorWithHookId(int $hookId, string $errorText): string
     {
-        return '[Hook ID: ' . $hook->getId() . '] ' . $errorText;
+        return '[Hook ID: ' . $hookId . '] ' . $errorText;
     }
 }
