@@ -1,6 +1,17 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Bwilliamson\Hooks\Service\HooksSession">
+        <arguments>
+            <argument name="namespace" xsi:type="string">hooks_session</argument>
+        </arguments>
+    </type>
+    <preference for="Bwilliamson\Hooks\Api\HooksRepositoryInterface"
+                type="Bwilliamson\Hooks\Model\Repository\HooksRepository"/>
+    <preference for="Bwilliamson\Hooks\Api\HooksServiceInterface"
+                type="Bwilliamson\Hooks\Service\HooksService"/>
+    <preference for="Bwilliamson\Hooks\Model\HookFactoryInterface"
+                type="Bwilliamson\Hooks\Model\HookFactory"/>
     <!--Grid collection-->
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>

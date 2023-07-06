@@ -2,54 +2,59 @@
 
 namespace Bwilliamson\Hooks\Controller\Adminhtml;
 
+use Bwilliamson\Hooks\Api\HooksRepositoryInterface;
+use Bwilliamson\Hooks\Api\HooksServiceInterface;
 use Bwilliamson\Hooks\Model\Hook;
-use Bwilliamson\Hooks\Model\HookFactory;
+use Bwilliamson\Hooks\Model\HookFactoryInterface;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\Registry;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 abstract class AbstractManageHooks extends Action
 {
     /** Authorization level of a basic admin session */
     const ADMIN_RESOURCE = 'Bwilliamson_Hooks::webhooks';
 
-    public HookFactory $hookFactory;
-    public Registry $coreRegistry;
+    protected ?HooksServiceInterface $hooksService;
+    protected ?HooksRepositoryInterface $hooksRepository;
+    protected ?HookFactoryInterface $hookFactory;
 
     /**
-     * @param HookFactory $hookFactory
-     * @param Registry $coreRegistry
      * @param Context $context
+     * @param HooksServiceInterface|null $hooksService
+     * @param HooksRepositoryInterface|null $hooksRepository
+     * @param HookFactoryInterface|null $hookFactory
      */
     public function __construct(
-        HookFactory $hookFactory,
-        Registry    $coreRegistry,
-        Context     $context
-    )
-    {
+        Context $context,
+        ?HooksServiceInterface $hooksService,
+        ?HooksRepositoryInterface $hooksRepository,
+        ?HookFactoryInterface $hookFactory
+    ) {
+        $this->hooksService = $hooksService;
+        $this->hooksRepository = $hooksRepository;
         $this->hookFactory = $hookFactory;
-        $this->coreRegistry = $coreRegistry;
 
         parent::__construct($context);
     }
 
-    protected function initHook(bool $register = false)
+    protected function initHook(bool $register = false): ?Hook
     {
-        $hookId = $this->getRequest()->getParam('hook_id');
+        $hookId = (int) $this->getRequest()->getParam('hook_id');
 
-        /** @var Hook $hook */
-        $hook = $this->hookFactory->create();
-
-        if ($hookId) {
-            $hook = $hook->load($hookId);
-            if (!$hook->getId()) {
+        if ($hookId && $this->hooksRepository) {
+            try {
+                $hook = $this->hooksRepository->getById($hookId);
+            } catch (NoSuchEntityException) {
                 $this->messageManager->addErrorMessage(__('This hook no longer exists.'));
-
-                return false;
+                return null;
             }
+        } else {
+            $hook = $this->hookFactory?->create();
         }
-        if ($register) {
-            $this->coreRegistry->register('bwilliamson_hooks_hook', $hook);
+
+        if ($register && $this->hooksService) {
+            $this->hooksService->setValue('bwilliamson_hooks_hook', $hook);
         }
 
         return $hook;
