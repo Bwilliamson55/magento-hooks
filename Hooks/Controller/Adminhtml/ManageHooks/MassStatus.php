@@ -7,45 +7,47 @@ use Exception;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Redirect;
+use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultFactory;
-use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Ui\Component\MassAction\Filter;
+use Magento\Framework\Api\SearchCriteriaBuilder;
 
 class MassStatus extends Action
 {
-    private Filter $filter;
+    private SearchCriteriaBuilder $searchCriteriaBuilder;
     private HooksRepositoryInterface $hooksRepository;
 
     public function __construct(
         Context           $context,
-        Filter            $filter,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
         HooksRepositoryInterface $hooksRepository
     ) {
-        $this->filter = $filter;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->hooksRepository = $hooksRepository;
         parent::__construct($context);
     }
 
-    public function execute()
+    /**
+     * @return Redirect|ResultInterface|ResponseInterface
+     */
+    public function execute(): Redirect|ResultInterface|ResponseInterface
     {
-        $collection = $this->filter->getCollection($this->hooksRepository->getCollection());
-
         $status = (int)$this->getRequest()->getParam('status');
         $hookUpdated = 0;
-        foreach ($collection as $hook) {
-            try {
-                $hook->setStatus($status)
-                    ->save();
 
+        $searchCriteria = $this->searchCriteriaBuilder->create();
+        $hookCollection = $this->hooksRepository->getList($searchCriteria);
+
+        foreach ($hookCollection as $hook) {
+            try {
+                $hook->setStatus($status);
+                $this->hooksRepository->save($hook);
                 $hookUpdated++;
             } catch (LocalizedException $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
-            } catch (Exception $e) {
-                $this->_getSession()->addException(
-                    $e,
-                    __('Something went wrong while updating status for %1.', $hook->getName())
-                );
+            } catch (Exception) {
+                $this->messageManager->addErrorMessage(__('An error occurred while updating the status.'));
             }
         }
 
