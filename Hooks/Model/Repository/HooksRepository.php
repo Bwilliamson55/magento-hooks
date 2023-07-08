@@ -2,6 +2,7 @@
 
 namespace Bwilliamson\Hooks\Model\Repository;
 
+use Bwilliamson\Hooks\Api\HooksRepositoryInterface;
 use Bwilliamson\Hooks\Model\Hook;
 use Bwilliamson\Hooks\Model\ResourceModel\Hook as HookResourceModel;
 use Bwilliamson\Hooks\Model\ResourceModel\Hook\CollectionFactory;
@@ -16,7 +17,7 @@ use Magento\Framework\Api\SearchResultsInterfaceFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 
-class HooksRepository
+class HooksRepository implements HooksRepositoryInterface
 {
 
     /**
@@ -39,10 +40,10 @@ class HooksRepository
      * Retrieve a hook by its ID.
      *
      * @param int $hookId
-     * @return Hook|DataObject
+     * @return Hook
      * @throws NoSuchEntityException
      */
-    public function getById(int $hookId): Hook|DataObject
+    public function getById(int $hookId): Hook
     {
         $hook = $this->hooksCollectionFactory->create()
             ->addFieldToFilter('hook_id', $hookId)
