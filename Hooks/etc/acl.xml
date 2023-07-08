@@ -10,8 +10,15 @@
                             <resource id="Bwilliamson_Hooks::webhooks" title="Webhooks">
                                 <resource id="Bwilliamson_Hooks::configuration" title="Webhooks Configuration"/>
                                 <resource id="Bwilliamson_Hooks::manage_hooks" title="Manage Hooks" translate="title"
-                                          sortOrder="20"/>
-                                <resource id="Bwilliamson_Hooks::logs" title="Logs" translate="title" sortOrder="30"/>
+                                          sortOrder="20">
+                                    <resource id="Bwilliamson_Hooks::manage_hooks_delete" title="Delete Hook" translate="title"
+                                              sortOrder="30"/>
+                                    <resource id="Bwilliamson_Hooks::manage_hooks_edit" title="Edit Hook" translate="title"
+                                              sortOrder="40"/>
+                                    <resource id="Bwilliamson_Hooks::manage_hooks_view" title="View Hook" translate="title"
+                                              sortOrder="50"/>
+                                </resource>
+                                <resource id="Bwilliamson_Hooks::logs" title="Logs" translate="title" sortOrder="130"/>
                             </resource>
                         </resource>
                     </resource>
