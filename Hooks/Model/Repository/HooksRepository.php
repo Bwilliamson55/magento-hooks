@@ -7,7 +7,6 @@ use Bwilliamson\Hooks\Model\Hook;
 use Bwilliamson\Hooks\Model\ResourceModel\Hook as HookResourceModel;
 use Bwilliamson\Hooks\Model\ResourceModel\Hook\CollectionFactory;
 use Exception;
-use Magento\Framework\DataObject;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -67,10 +66,6 @@ class HooksRepository implements HooksRepositoryInterface
     {
         $collection = $this->hooksCollectionFactory->create();
         $this->collectionProcessor->process($searchCriteria, $collection);
-
-        $this->searchCriteriaBuilder->setCriteria($searchCriteria);
-        $this->searchCriteriaBuilder->setRequestName('bwilliamson_hooks_hook_listing');
-        $searchCriteria = $this->searchCriteriaBuilder->create();
 
         $searchResult = $this->searchResultsFactory->create();
         $searchResult->setSearchCriteria($searchCriteria);

@@ -8,9 +8,10 @@ use Bwilliamson\Hooks\Api\HooksServiceInterface;
 use Bwilliamson\Hooks\Model\HookFactory;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Page;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\View\Result\PageFactory;
 
-class Edit extends AbstractManageHooks
+class Edit extends AbstractManageHooks implements HttpGetActionInterface
 {
     const ADMIN_RESOURCE = 'Bwilliamson_Hooks::manage_hooks_edit';
 

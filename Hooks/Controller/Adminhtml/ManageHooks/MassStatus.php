@@ -3,56 +3,45 @@
 namespace Bwilliamson\Hooks\Controller\Adminhtml\ManageHooks;
 
 use Bwilliamson\Hooks\Api\HooksRepositoryInterface;
+use Bwilliamson\Hooks\Model\ResourceModel\Hook\CollectionFactory;
 use Exception;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Redirect;
-use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Controller\ResultFactory;
-use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Ui\Component\MassAction\Filter;
 
-class MassStatus extends Action
+class MassStatus extends Action implements HttpPostActionInterface
 {
-    private SearchCriteriaBuilder $searchCriteriaBuilder;
-    private HooksRepositoryInterface $hooksRepository;
-
+    const ADMIN_RESOURCE = 'Bwilliamson_Hooks::manage_hooks_edit';
     public function __construct(
         Context           $context,
-        SearchCriteriaBuilder $searchCriteriaBuilder,
-        HooksRepositoryInterface $hooksRepository
+        private readonly CollectionFactory $collectionFactory,
+        private readonly Filter $filter
     ) {
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->hooksRepository = $hooksRepository;
         parent::__construct($context);
     }
 
     /**
-     * @return Redirect|ResultInterface|ResponseInterface
+     * @throws LocalizedException
      */
     public function execute()
     {
-        $status = (int)$this->getRequest()->getParam('status');
-        $hookUpdated = 0;
-
-        $searchCriteria = $this->searchCriteriaBuilder->create();
-        $hookCollection = $this->hooksRepository->getList($searchCriteria);
-
-        foreach ($hookCollection as $hook) {
-            try {
-                $hook->setStatus($status);
-                $this->hooksRepository->save($hook);
-                $hookUpdated++;
-            } catch (LocalizedException $e) {
-                $this->messageManager->addErrorMessage($e->getMessage());
-            } catch (Exception) {
-                $this->messageManager->addErrorMessage(__('An error occurred while updating the status.'));
+        $collection = $this->collectionFactory->create();
+        $items = $this->filter->getCollection($collection);
+        $itemCount = $items->getSize();
+        try {
+            foreach ($items as $item) {
+                $item->setStatus((int) $this->getRequest()->getParam('enable'));
+                $item->save();
             }
-        }
-
-        if ($hookUpdated) {
-            $this->messageManager->addSuccessMessage(__('A total of %1 record(s) have been updated.', $hookUpdated));
+            $this->messageManager->addSuccessMessage(__('A total of %1 record(s) have been updated.', $itemCount));
+        } catch (LocalizedException $e) {
+                $this->messageManager->addErrorMessage($e->getMessage());
+        } catch (Exception) {
+                $this->messageManager->addErrorMessage(__('An error occurred while updating the status.'));
         }
 
         /** @var Redirect $resultRedirect */

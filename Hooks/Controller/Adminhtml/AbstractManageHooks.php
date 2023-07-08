@@ -35,7 +35,7 @@ abstract class AbstractManageHooks extends Action
     {
         $hookId = (int) $this->getRequest()->getParam('hook_id');
 
-        if (!is_null($hookId) && $this->hooksRepository) {
+        if ($hookId && $this->hooksRepository) {
             try {
                 $hook = $this->hooksRepository->getById($hookId);
             } catch (NoSuchEntityException) {

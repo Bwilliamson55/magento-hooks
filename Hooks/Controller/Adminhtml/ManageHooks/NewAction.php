@@ -6,17 +6,16 @@ use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Forward;
 use Magento\Backend\Model\View\Result\ForwardFactory;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 
-class NewAction extends Action
+class NewAction extends Action implements HttpGetActionInterface
 {
-    private ForwardFactory $resultForwardFactory;
+    const ADMIN_RESOURCE = 'Bwilliamson_Hooks::manage_hooks_edit';
 
     public function __construct(
         Context        $context,
-        ForwardFactory $resultForwardFactory
+        private ForwardFactory $resultForwardFactory
     ) {
-        $this->resultForwardFactory = $resultForwardFactory;
-
         parent::__construct($context);
     }
 

@@ -6,26 +6,21 @@ use Bwilliamson\Hooks\Api\HooksRepositoryInterface;
 use Exception;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\App\ResponseInterface;
-use Magento\Framework\Controller\Result\Json;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Controller\Result\JsonFactory;
-use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use RuntimeException;
 
-class InlineEdit extends Action
+class InlineEdit extends Action implements HttpPostActionInterface
 {
-    private JsonFactory $jsonFactory;
-    private HooksRepositoryInterface $hooksRepository;
+    const ADMIN_RESOURCE = 'Bwilliamson_Hooks::manage_hooks_edit';
 
     public function __construct(
-        Context     $context,
-        JsonFactory $jsonFactory,
-        HooksRepositoryInterface $hooksRepository
+        Context                                   $context,
+        private readonly JsonFactory              $jsonFactory,
+        private readonly HooksRepositoryInterface $hooksRepository
     ) {
-        $this->jsonFactory = $jsonFactory;
-        $this->hooksRepository = $hooksRepository;
 
         parent::__construct($context);
     }
@@ -36,7 +31,8 @@ class InlineEdit extends Action
         $error = false;
         $messages = [];
         $hookItems = $this->getRequest()->getParam('items', []);
-        if (!empty($hookItems) && !$this->getRequest()->getParam('isAjax')) {
+        $isAjax = $this->getRequest()->getParam('isAjax', false);
+        if (!$isAjax || !count($hookItems)) {
             return $resultJson->setData([
                 'messages' => [__('Please correct the data sent.')],
                 'error' => true,
