@@ -7,50 +7,64 @@ use Magento\Framework\View\Element\UiComponent\ContextInterface;
 use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
 
-
 class Actions extends Column
 {
-    protected UrlInterface $urlBuilder;
-
     public function __construct(
-        ContextInterface   $context,
-        UiComponentFactory $uiComponentFactory,
-        UrlInterface       $urlBuilder,
-        array              $components = [],
-        array              $data = []
-    )
-    {
-        $this->urlBuilder = $urlBuilder;
-
+        ContextInterface       $context,
+        UiComponentFactory     $uiComponentFactory,
+        protected UrlInterface $urlBuilder,
+        array                  $components = [],
+        array                  $data = []
+    ) {
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 
     public function prepareDataSource(array $dataSource): array
     {
-        if (isset($dataSource['data']['items'])) {
-            foreach ($dataSource['data']['items'] as &$item) {
-                $actions = $this->getData('action_list');
-                foreach ($actions as $key => $action) {
-                    $params = $action['params'];
-                    foreach ($params as $field => $param) {
-                        $params[$field] = $item[$param];
-                    }
-                    $parameters = [];
-                    if (isset($action['params']['id']) && isset($item[$action['params']['id']])) {
-                        $parameters['id'] = $item[$action['params']['id']];
-                    }
-                    if (isset($action['params']['hook_id']) && isset($item[$action['params']['hook_id']])) {
-                        $parameters['hook_id'] = $item[$action['params']['hook_id']];
-                    }
-                    $item[$this->getData('name')][$key] = [
-                        'href' => $this->urlBuilder->getUrl($action['path'], $parameters),
-                        'label' => $action['label'],
+        if (!isset($dataSource['data']['items'])) {
+            return $dataSource;
+        }
+        foreach ($dataSource['data']['items'] as &$item) {
+            if (!isset($item['id']) && !isset($item['hook_id'])) {
+                continue;
+            }
+            // Log or Hook?
+            //Hooks/view/adminhtml/ui_component/bwilliamson_hooks_logs_listing.xml
+            //Hooks/view/adminhtml/ui_component/bwilliamson_hooks_managehooks_listing.xml
+            $type = $this->getData('type');
+            if ($type === 'hook') {
+                $item[$this->getData('name')] = [
+                    'edit' => [
+                        'href' => $this->urlBuilder->getUrl('bwhooks/managehooks/edit', ['hook_id' => $item['hook_id']]),
+                        'label' => __('Edit'),
                         'hidden' => false,
-                    ];
-                }
+                    ],
+                    'delete' => [
+                        'href' => $this->urlBuilder->getUrl('bwhooks/managehooks/delete', [
+                            'hook_id' => $item['hook_id'],
+                        ]),
+                        'label' => __('Delete'),
+                        'confirm' => [
+                            'title' => __('Delete %1', $item['name']),
+                            'message' => __('Are you sure you want to delete the "%1" hook?', $item['name']),
+                        ],
+                    ],
+                ];
+            } elseif ($type === 'hook_log') {
+                $item[$this->getData('name')] = [
+                    'view' => [
+                        'href' => $this->urlBuilder->getUrl('bwhooks/logs/edit', ['id' => $item['id']]),
+                        'label' => __('View'),
+                        'hidden' => false,
+                    ],
+                    'replay' => [
+                        'href' => $this->urlBuilder->getUrl('bwhooks/logs/replay', ['id' => $item['id']]),
+                        'label' => __('Replay'),
+                        'hidden' => false,
+                    ]
+                ];
             }
         }
-
         return $dataSource;
     }
 }
