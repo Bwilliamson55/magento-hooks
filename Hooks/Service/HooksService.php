@@ -2,7 +2,9 @@
 
 namespace Bwilliamson\Hooks\Service;
 
-class HooksService
+use Bwilliamson\Hooks\Api\HooksServiceInterface;
+
+class HooksService implements HooksServiceInterface
 {
     /**
      * @param HooksSession $hooksSession
