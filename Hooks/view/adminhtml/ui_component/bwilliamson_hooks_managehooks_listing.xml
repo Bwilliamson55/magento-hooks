@@ -8,6 +8,15 @@
                 bwilliamson_hooks_managehooks_listing.bwilliamson_hooks_hook_listing_data_source
             </item>
         </item>
+        <item name="buttons" xsi:type="array">
+            <item name="add" xsi:type="array">
+                <item name="name" xsi:type="string">dynamic_add_button</item>
+                <item name="label" xsi:type="string" translate="true">Add New Hook</item>
+                <item name="sortOrder" xsi:type="number">10</item>
+                <item name="class" xsi:type="string">primary</item>
+                <item name="url" xsi:type="string">*/*/new</item>
+            </item>
+        </item>
     </argument>
     <settings>
         <deps>
@@ -39,6 +48,10 @@
         <exportButton name="export_button"/>
         <filters name="listing_filters"/>
         <massaction name="listing_massaction" component="Magento_Ui/js/grid/tree-massactions">
+            <settings>
+                <selectProvider>bwilliamson_hooks_managehooks_listing.bwilliamson_hooks_managehooks_listing.bwilliamson_hooks_hook_columns.ids</selectProvider>
+                <indexField>hook_id</indexField>
+            </settings>
             <action name="delete">
                 <settings>
                     <type>delete</type>
@@ -50,44 +63,51 @@
                     </confirm>
                 </settings>
             </action>
-            <action name="status">
+            <action name="status_enable">
                 <settings>
                     <type>status</type>
-                    <label translate="true">Change status</label>
-                    <url path="bwhooks/managehooks/massStatus"/>
+                    <label translate="true">Enable</label>
+                    <url path="bwhooks/managehooks/massStatus">
+                        <param name="enable">1</param>
+                    </url>
+                </settings>
+            </action>
+            <action name="status_disable">
+                <settings>
+                    <type>statusDisable</type>
+                    <label translate="true">Disable</label>
+                    <url path="bwhooks/managehooks/massStatus">
+                        <param name="disable">1</param>
+                    </url>
                 </settings>
             </action>
         </massaction>
         <paging name="listing_paging"/>
     </listingToolbar>
     <columns name="bwilliamson_hooks_hook_columns">
-        <argument name="data" xsi:type="array">
-            <item name="config" xsi:type="array">
-                <item name="editorConfig" xsi:type="array">
-                    <item name="selectProvider" xsi:type="string">
-                        bwilliamson_hooks_managehooks_listing.bwilliamson_hooks_managehooks_listing.bwilliamson_hooks_hook_columns.ids
+        <settings>
+            <childDefaults>
+                <param name="fieldAction" xsi:type="array">
+                    <item name="provider" xsi:type="string">
+                        bwilliamson_hooks_managehooks_listing.bwilliamson_hooks_managehooks_listing.bwilliamson_hooks_hook_columns_editor
                     </item>
-                    <item name="enabled" xsi:type="boolean">true</item>
-                    <item name="indexField" xsi:type="string">hook_id</item>
-                    <item name="clientConfig" xsi:type="array">
-                        <item name="saveUrl" xsi:type="url" path="bwhooks/managehooks/inlineEdit"/>
-                        <item name="validateBeforeSave" xsi:type="boolean">false</item>
+                    <item name="target" xsi:type="string">startEdit</item>
+                    <item name="params" xsi:type="array">
+                        <item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
+                        <item name="1" xsi:type="boolean">true</item>
                     </item>
-                </item>
-                <item name="childDefaults" xsi:type="array">
-                    <item name="fieldAction" xsi:type="array">
-                        <item name="provider" xsi:type="string">
-                            bwilliamson_hooks_managehooks_listing.bwilliamson_hooks_managehooks_listing.bwilliamson_hooks_hook_columns_editor
-                        </item>
-                        <item name="target" xsi:type="string">startEdit</item>
-                        <item name="params" xsi:type="array">
-                            <item name="0" xsi:type="string">${ $.$data.rowIndex }</item>
-                            <item name="1" xsi:type="boolean">true</item>
-                        </item>
-                    </item>
-                </item>
-            </item>
-        </argument>
+                </param>
+            </childDefaults>
+            <editorConfig>
+                <param name="selectProvider" xsi:type="string">bwilliamson_hooks_managehooks_listing.bwilliamson_hooks_managehooks_listing.bwilliamson_hooks_hook_columns.ids</param>
+                <param name="enabled" xsi:type="boolean">true</param>
+                <param name="indexField" xsi:type="string">hook_id</param>
+                <param name="clientConfig" xsi:type="array">
+                    <item name="saveUrl" xsi:type="url" path="bwhooks/managehooks/inlineEdit"/>
+                    <item name="validateBeforeSave" xsi:type="boolean">false</item>
+                </param>
+            </editorConfig>
+        </settings>
         <selectionsColumn name="ids">
             <settings>
                 <resizeEnabled>false</resizeEnabled>
@@ -114,17 +134,19 @@
                 </editor>
             </settings>
         </column>
-        <column name="status">
+        <column name="status" component="Magento_Ui/js/grid/columns/select">
             <settings>
+                <label translate="true">Enabled</label>
+                <options class="Magento\Config\Model\Config\Source\Yesno"/>
                 <filter>select</filter>
-                <label translate="true">Status</label>
+                <dataType>select</dataType>
+                <sorting>desc</sorting>
                 <editor>
                     <editorType>select</editorType>
                     <validation>
                         <rule name="required-entry" xsi:type="boolean">true</rule>
                     </validation>
                 </editor>
-                <options class="Magento\Config\Model\Config\Source\Enabledisable"/>
             </settings>
         </column>
         <column name="store_ids" class="Bwilliamson\Hooks\Ui\Component\Listing\Columns\Store">
@@ -134,7 +156,7 @@
                 <sortable>false</sortable>
             </settings>
         </column>
-        <column name="hook_type">
+        <column name="hook_type" component="Magento_Ui/js/grid/columns/select">
             <settings>
                 <filter>select</filter>
                 <label translate="true">Hook Type</label>
