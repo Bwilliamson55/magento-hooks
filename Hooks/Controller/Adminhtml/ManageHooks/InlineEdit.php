@@ -30,7 +30,7 @@ class InlineEdit extends Action
         parent::__construct($context);
     }
 
-    public function execute(): Json|ResultInterface|ResponseInterface
+    public function execute()
     {
         $resultJson = $this->jsonFactory->create();
         $error = false;

@@ -5,11 +5,9 @@ namespace Bwilliamson\Hooks\Controller\Adminhtml\ManageHooks;
 use Bwilliamson\Hooks\Api\HooksRepositoryInterface;
 use Bwilliamson\Hooks\Api\HooksServiceInterface;
 use Bwilliamson\Hooks\Controller\Adminhtml\AbstractManageHooks;
+use Bwilliamson\Hooks\Model\HookFactory;
 use Exception;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\App\ResponseInterface;
-use Magento\Framework\Controller\Result\Redirect;
-use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Store\Model\StoreManagerInterface;
@@ -18,23 +16,20 @@ use RuntimeException;
 class Save extends AbstractManageHooks
 {
     private Json $json;
-    protected ?HooksRepositoryInterface $hooksRepository;
-    protected ?HooksServiceInterface $hooksService;
 
     public function __construct(
         Context                                $context,
+        protected HooksServiceInterface       $hooksService,
+        protected HooksRepositoryInterface    $hooksRepository,
+        HookFactory                            $hookFactory,
         Json                                   $jsonSerializer,
-        private readonly StoreManagerInterface $storeManager,
-        HooksRepositoryInterface               $hooksRepository,
-        HooksServiceInterface                  $hooksService
+        private readonly StoreManagerInterface $storeManager
     ) {
         $this->json = $jsonSerializer;
-        $this->hooksRepository = $hooksRepository;
-        $this->hooksService = $hooksService;
-        parent::__construct($context);
+        parent::__construct($context, $this->hooksService, $this->hooksRepository, $hookFactory);
     }
 
-    public function execute(): ResultInterface|ResponseInterface|Redirect
+    public function execute()
     {
         $resultRedirect = $this->resultRedirectFactory->create();
         $postData = $this->getRequest()->getPostValue();

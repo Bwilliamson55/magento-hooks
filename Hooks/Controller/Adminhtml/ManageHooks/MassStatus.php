@@ -31,7 +31,7 @@ class MassStatus extends Action
     /**
      * @return Redirect|ResultInterface|ResponseInterface
      */
-    public function execute(): Redirect|ResultInterface|ResponseInterface
+    public function execute()
     {
         $status = (int)$this->getRequest()->getParam('status');
         $hookUpdated = 0;

@@ -5,7 +5,7 @@ namespace Bwilliamson\Hooks\Controller\Adminhtml;
 use Bwilliamson\Hooks\Api\HooksRepositoryInterface;
 use Bwilliamson\Hooks\Api\HooksServiceInterface;
 use Bwilliamson\Hooks\Model\Hook;
-use Bwilliamson\Hooks\Model\HookFactoryInterface;
+use Bwilliamson\Hooks\Model\HookFactory;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Exception\NoSuchEntityException;
@@ -17,15 +17,15 @@ abstract class AbstractManageHooks extends Action
 
     /**
      * @param Context $context
-     * @param HooksServiceInterface|null $hooksService
-     * @param HooksRepositoryInterface|null $hooksRepository
-     * @param HookFactoryInterface|null $hookFactory
+     * @param HooksServiceInterface $hooksService
+     * @param HooksRepositoryInterface $hooksRepository
+     * @param HookFactory $hookFactory
      */
     public function __construct(
-        Context                             $context,
-        protected ?HooksServiceInterface    $hooksService,
-        protected ?HooksRepositoryInterface $hooksRepository,
-        protected ?HookFactoryInterface     $hookFactory
+        Context                            $context,
+        protected HooksServiceInterface    $hooksService,
+        protected HooksRepositoryInterface $hooksRepository,
+        protected HookFactory              $hookFactory
     ) {
 
         parent::__construct($context);
@@ -35,7 +35,7 @@ abstract class AbstractManageHooks extends Action
     {
         $hookId = (int) $this->getRequest()->getParam('hook_id');
 
-        if ($hookId && $this->hooksRepository) {
+        if (!is_null($hookId) && $this->hooksRepository) {
             try {
                 $hook = $this->hooksRepository->getById($hookId);
             } catch (NoSuchEntityException) {
@@ -43,7 +43,7 @@ abstract class AbstractManageHooks extends Action
                 return null;
             }
         } else {
-            $hook = $this->hookFactory?->create();
+            $hook = $this->hookFactory->create();
         }
 
         if ($register && $this->hooksService) {

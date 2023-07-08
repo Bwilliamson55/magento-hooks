@@ -2,10 +2,11 @@
 
 namespace Bwilliamson\Hooks\Controller\Adminhtml\Logs;
 
+use Bwilliamson\Hooks\Api\HooksRepositoryInterface;
+use Bwilliamson\Hooks\Api\HooksServiceInterface;
 use Bwilliamson\Hooks\Controller\Adminhtml\AbstractManageHooks;
 use Bwilliamson\Hooks\Model\HookFactory;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\Registry;
 use Magento\Framework\View\Result\LayoutFactory;
 
 class Log extends AbstractManageHooks
@@ -13,15 +14,15 @@ class Log extends AbstractManageHooks
     protected LayoutFactory $resultLayoutFactory;
 
     public function __construct(
-        HookFactory   $hookFactory,
-        Registry      $coreRegistry,
         Context       $context,
+        HooksServiceInterface              $hooksService,
+        protected HooksRepositoryInterface $hooksRepository,
+        HookFactory                            $hookFactory,
         LayoutFactory $resultLayoutFactory
-    )
-    {
+    ) {
         $this->resultLayoutFactory = $resultLayoutFactory;
 
-        parent::__construct($hookFactory, $coreRegistry, $context);
+        parent::__construct($context, $hooksService, $hooksRepository, $hookFactory);
     }
 
     public function execute()
