@@ -103,7 +103,7 @@
                 <param name="enabled" xsi:type="boolean">true</param>
                 <param name="indexField" xsi:type="string">hook_id</param>
                 <param name="clientConfig" xsi:type="array">
-                    <item name="saveUrl" xsi:type="url" path="bwhooks/managehooks/inlineEdit"/>
+                    <item name="saveUrl" xsi:type="url" path="*/*/inlineEdit"/>
                     <item name="validateBeforeSave" xsi:type="boolean">false</item>
                 </param>
             </editorConfig>

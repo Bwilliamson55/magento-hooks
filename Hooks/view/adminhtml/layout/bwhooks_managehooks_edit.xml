@@ -9,29 +9,7 @@
     </head>
     <body>
         <referenceContainer name="content">
-            <block class="Bwilliamson\Hooks\Block\Adminhtml\Hook\Edit" name="bwilliamson_hooks_hook_edit"/>
-        </referenceContainer>
-        <referenceContainer name="left">
-            <block class="Bwilliamson\Hooks\Block\Adminhtml\Hook\Edit\Tabs" name="bwilliamson_hooks_hook_tabs">
-                <block class="Bwilliamson\Hooks\Block\Adminhtml\Hook\Edit\Tab\General"
-                       name="bwilliamson_hooks_hook_tab_general"/>
-                <block class="Bwilliamson\Hooks\Block\Adminhtml\Hook\Edit\Tab\Actions"
-                       name="bwilliamson_hooks_hook_tab_actions"/>
-                <block class="Bwilliamson\Hooks\Block\Adminhtml\Hook\Edit\Tab\History"
-                       name="bwilliamson_hooks_hook_tab_history"/>
-                <action method="addTab">
-                    <argument name="name" xsi:type="string">hook</argument>
-                    <argument name="block" xsi:type="string">bwilliamson_hooks_hook_tab_general</argument>
-                </action>
-                <action method="addTab">
-                    <argument name="name" xsi:type="string">template</argument>
-                    <argument name="block" xsi:type="string">bwilliamson_hooks_hook_tab_actions</argument>
-                </action>
-                <action method="addTab">
-                    <argument name="name" xsi:type="string">history</argument>
-                    <argument name="block" xsi:type="string">bwilliamson_hooks_hook_tab_history</argument>
-                </action>
-            </block>
+            <uiComponent name="bwilliamson_hooks_hook_form"/>
         </referenceContainer>
     </body>
 </page>

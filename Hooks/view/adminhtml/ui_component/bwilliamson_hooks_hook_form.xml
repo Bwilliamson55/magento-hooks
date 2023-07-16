@@ -1,0 +1,280 @@
+<?xml version="1.0"?>
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">bwilliamson_hooks_hook_form.bwilliamson_hooks_hook_data_source</item>
+        </item>
+        <item name="template" xsi:type="string">templates/form/collapsible</item>
+    </argument>
+    <settings>
+        <buttons>
+            <button name="back" class="Bwilliamson\Hooks\Block\Adminhtml\Hook\Edit\Button\Back"/>
+            <button name="save" class="Bwilliamson\Hooks\Block\Adminhtml\Hook\Edit\Button\Save"/>
+        </buttons>
+        <namespace>bwilliamson_hooks_hook_form</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>bwilliamson_hooks_hook_form.bwilliamson_hooks_hook_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="bwilliamson_hooks_hook_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <settings>
+            <submitUrl path="*/*/save"/>
+        </settings>
+        <dataProvider class="Bwilliamson\Hooks\Ui\DataProvider\Hook" name="bwilliamson_hooks_hook_data_source">
+            <settings>
+                <requestFieldName>hook_id</requestFieldName>
+                <primaryFieldName>hook_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <fieldset name="bwilliamson_hooks_hook_fieldset_base">
+        <settings>
+            <label translate="true">Add/Edit Hook</label>
+            <collapsible>true</collapsible>
+            <opened>true</opened>
+        </settings>
+        <field name="hook_id" formElement="hidden"/>
+        <field name="name" formElement="input">
+            <settings>
+                <label translate="true">Name</label>
+                <dataType>text</dataType>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+        </field>
+        <field name="hook_type" formElement="select" component="customOrderStatus">
+            <settings>
+                <label translate="true">Hook Type</label>
+                <dataType>text</dataType>
+                <dataScope>hook_type</dataScope>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Bwilliamson\Hooks\Model\Config\Source\HookType"/>
+                        <caption translate="true">-- Please Select --</caption>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="status" formElement="select">
+            <settings>
+                <label translate="true">Status</label>
+                <dataType>text</dataType>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Magento\Config\Model\Config\Source\Enabledisable"/>
+                        <caption translate="true">-- Please Select --</caption>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="order_status" formElement="multiselect">
+            <settings>
+                <label translate="true">Order Status</label>
+                <dataType>text</dataType>
+                <notice translate="true">Only used for the "Order" type hook. Blank will select all.</notice>
+            </settings>
+            <formElements>
+                <multiselect>
+                    <settings>
+                        <options class="Magento\Sales\Model\Config\Source\Order\Status"/>
+                        <caption translate="true">-- Please Select --</caption>
+                    </settings>
+                </multiselect>
+            </formElements>
+        </field>
+        <field name="store_ids" formElement="multiselect">
+            <settings>
+                <label translate="true">Store View</label>
+                <dataType>text</dataType>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <multiselect>
+                    <settings>
+                        <options class="Magento\Store\Ui\Component\Listing\Column\Store\Options"/>
+                        <caption translate="true">-- Please Select --</caption>
+                    </settings>
+                </multiselect>
+            </formElements>
+        </field>
+        <field name="priority" formElement="input">
+            <settings>
+                <label translate="true">Priority</label>
+                <dataType>text</dataType>
+                <visible>true</visible>
+                <notice translate="true">0 is the highest</notice>
+            </settings>
+        </field>
+    </fieldset>
+    <fieldset name="bwilliamson_hooks_hook_fieldset_actions">
+        <settings>
+            <label translate="true">Actions</label>
+            <collapsible>true</collapsible>
+            <opened>false</opened>
+        </settings>
+        <field name="payload_url" formElement="input">
+            <settings>
+                <label translate="true">Payload URL</label>
+                <dataType>text</dataType>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+                <additionalClasses>
+                    <class name="payload-url-field">true</class>
+                </additionalClasses>
+            </settings>
+        </field>
+        <field name="method" formElement="select">
+            <settings>
+                <label translate="true">Payload Method</label>
+                <dataType>text</dataType>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Bwilliamson\Hooks\Model\Config\Source\Method"/>
+                        <caption translate="true">-- Please Select --</caption>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="authentication" formElement="select">
+            <settings>
+                <label translate="true">Authentication</label>
+                <dataType>text</dataType>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Bwilliamson\Hooks\Model\Config\Source\Authentication"/>
+                        <caption translate="true">-- Please Select --</caption>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="username" formElement="input">
+            <settings>
+                <label translate="true">Username</label>
+                <dataType>text</dataType>
+                <visible>true</visible>
+            </settings>
+        </field>
+        <field name="password" formElement="input">
+            <settings>
+                <label translate="true">Password</label>
+                <dataType>text</dataType>
+                <visible>true</visible>
+            </settings>
+        </field>
+        <dynamicRows name="headers" sortOrder="50">
+                <settings>
+                    <addButtonLabel translate="true">Add Header</addButtonLabel>
+                    <additionalClasses>
+                        <class name="headers-field">true</class>
+                        <class name="admin__field-wide">true</class>
+                    </additionalClasses>
+                    <componentType>dynamicRows</componentType>
+                    <dndConfig>
+                        <param name="enabled" xsi:type="boolean">false</param>
+                    </dndConfig>
+                    <imports>
+                        <link name="visible">ns='bwilliamson_hooks_hook_form.bwilliamson_hooks_hook_data_source:hook_id:value'</link>
+                    </imports>
+                </settings>
+                <container name="record" component="Magento_Ui/js/dynamic-rows/record">
+                    <argument name="data" xsi:type="array">
+                        <item name="config" xsi:type="array">
+                            <item name="componentType" xsi:type="string">container</item>
+                            <item name="positionProvider" xsi:type="string">position</item>
+                            <item name="isTemplate" xsi:type="boolean">true</item>
+                            <item name="is_collection" xsi:type="boolean">true</item>
+                        </item>
+                    </argument>
+                    <field name="header_name" formElement="input">
+                        <settings>
+                            <dataType>text</dataType>
+                            <label translate="true">Header Name</label>
+                        </settings>
+                    </field>
+                    <field name="header_value" formElement="input">
+                        <settings>
+                            <dataType>text</dataType>
+                            <label translate="true">Header Value</label>
+                        </settings>
+                    </field>
+                    <field name="position" formElement="input">
+                        <settings>
+                            <dataType>text</dataType>
+                            <visible>false</visible>
+                            <imports>
+                                <link name="visible">ns='bwilliamson_hooks_hook_form.bwilliamson_hooks_hook_data_source:hook_id:value'</link>
+                            </imports>
+                        </settings>
+                    </field>
+                    <actionDelete>
+                        <settings>
+                            <dataType>text</dataType>
+                            <additionalClasses>
+                                <class name="delete-field">true</class>
+                            </additionalClasses>
+                            <componentType>actionDelete</componentType>
+                            <label translate="true">Actions</label>
+                        </settings>
+                    </actionDelete>
+                </container>
+        </dynamicRows>
+        <field name="content_type" formElement="select">
+            <settings>
+                <label translate="true">Content Type</label>
+                <dataType>text</dataType>
+                <validation>
+                    <rule name="required-entry" xsi:type="boolean">true</rule>
+                </validation>
+            </settings>
+            <formElements>
+                <select>
+                    <settings>
+                        <options class="Bwilliamson\Hooks\Model\Config\Source\ContentType"/>
+                        <caption translate="true">-- Please Select --</caption>
+                    </settings>
+                </select>
+            </formElements>
+        </field>
+        <field name="body" formElement="textarea">
+            <settings>
+                <label translate="true">Body</label>
+                <dataType>text</dataType>
+                <visible>true</visible>
+                <additionalClasses>
+                    <class name="body-field">true</class>
+                </additionalClasses>
+            </settings>
+        </field>
+    </fieldset>
+</form>
